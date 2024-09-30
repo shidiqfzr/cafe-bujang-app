@@ -60,6 +60,16 @@ import bag_icon from './bag_icon.png'
 import logout_icon from './logout_icon.png'
 import parcel_icon from './parcel_icon.png'
 
+import promo_1 from './promo_1.png'
+import promo_2 from './promo_2.png'
+import promo_3 from './promo_3.png'
+
+export const promoImages = [
+    { src: promo_1, alt: "Promo 1" },
+    { src: promo_2, alt: "Promo 2" },
+    { src: promo_3, alt: "Promo 3" },
+  ];
+
 export const assets = {
     logo,
     basket_icon,
