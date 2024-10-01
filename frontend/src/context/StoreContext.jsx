@@ -54,6 +54,15 @@ const StoreContextProvider = (props) => {
         }
     };
 
+     // Recalculate discount whenever cart or promo code changes
+     useEffect(() => {
+        if (promoCode === "MERDEKA") {
+            setDiscount(getTotalCartAmount() * 0.10); // 10% discount
+        } else {
+            setDiscount(0);
+        }
+    }, [cartItems, promoCode]); // Update discount when cartItems or promoCode changes
+
     // Fetch food list from API
     const fetchFoodList = async () => {
         try {
