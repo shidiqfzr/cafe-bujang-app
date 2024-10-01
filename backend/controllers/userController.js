@@ -3,14 +3,16 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
 
-// Function to create a JWT token
+// Function to create a JWT token with expiration
 const createToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET);
+    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' }); // Token expires in 7 days
 };
 
 // Register user
 const registerUser = async (req, res) => {
-    const { name, password, email } = req.body;
+    const { name, password } = req.body;
+    const email = req.body.email.toLowerCase(); // Normalize email input
+
     try {
         // Checking if the user already exists
         const exist = await userModel.findOne({ email });
@@ -23,8 +25,8 @@ const registerUser = async (req, res) => {
             return res.status(400).json({ success: false, message: "Please enter a valid email" });
         }
 
-        if (password.length < 8) {
-            return res.status(400).json({ success: false, message: "Please enter a strong password" });
+        if (!validator.isStrongPassword(password)) {
+            return res.status(400).json({ success: false, message: "Password must be at least 8 characters and include uppercase, lowercase, numbers, and special characters" });
         }
 
         // Hashing user password
@@ -33,8 +35,8 @@ const registerUser = async (req, res) => {
 
         // Creating a new user
         const newUser = new userModel({
-            name: name,
-            email: email,
+            name,
+            email,
             password: hashedPassword
         });
 
@@ -45,14 +47,18 @@ const registerUser = async (req, res) => {
 
         res.status(201).json({ success: true, token });
     } catch (error) {
-        console.log(error);
+        if (process.env.NODE_ENV === 'development') {
+            console.log(error);
+        }
         res.status(500).json({ success: false, message: "Error registering user" });
     }
 };
 
 // Login user
 const loginUser = async (req, res) => {
-    const { email, password } = req.body;
+    const email = req.body.email.toLowerCase(); // Normalize email input
+    const { password } = req.body;
+
     try {
         // Checking if the user exists
         const user = await userModel.findOne({ email });
@@ -71,7 +77,9 @@ const loginUser = async (req, res) => {
 
         res.status(200).json({ success: true, token });
     } catch (error) {
-        console.log(error);
+        if (process.env.NODE_ENV === 'development') {
+            console.log(error);
+        }
         res.status(500).json({ success: false, message: "Error logging in" });
     }
 };

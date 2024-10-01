@@ -1,36 +1,31 @@
-import React, { useContext, useState } from 'react'
-import './LoginPopup.css'
-import { assets } from '../../assets/assets'
-import { StoreContext } from '../../context/StoreContext'
-import axios from "axios"
+import React, { useContext, useState } from 'react';
+import './LoginPopup.css';
+import { assets } from '../../assets/assets';
+import { StoreContext } from '../../context/StoreContext';
+import axios from "axios";
 
-const LoginPopup = ({setShowLogin}) => {
-    const {url, setToken} = useContext(StoreContext)
+const LoginPopup = ({ setShowLogin }) => {
+    const { url, setToken } = useContext(StoreContext);
 
-    const [currState, setCurrState] = useState("Login")
+    const [currState, setCurrState] = useState("Login");
     const [data, setData] = useState({
         name: "",
         email: "",
         password: ""
-    })
+    });
 
-    // Error state for displaying error messages
     const [error, setError] = useState("");
 
     const onChangeHandler = (event) => {
         const name = event.target.name;
         const value = event.target.value;
-        setData(data => ({ ...data, [name]: value }))
-    }
+        setData(prevData => ({ ...prevData, [name]: value }));
+    };
 
     const onLogin = async (event) => {
-        event.preventDefault()
-        let newUrl = url;
-        if (currState === "Login") {
-            newUrl += "/api/user/login"
-        } else {
-            newUrl += "/api/user/register"
-        }
+        event.preventDefault();
+        let newUrl = `${url}/api/user`;
+        newUrl += currState === "Login" ? "/login" : "/register";
 
         try {
             const response = await axios.post(newUrl, data);
@@ -40,12 +35,16 @@ const LoginPopup = ({setShowLogin}) => {
                 localStorage.setItem("token", response.data.token);
                 setShowLogin(false);
             } else {
-                setError(response.data.message); // Set error message if login/register fails
+                setError(response.data.message);
             }
-        } catch (error) {
-            setError("An error occurred. Please try again."); // Set a general error message
+        } catch (err) {
+            if (err.response && err.response.data && err.response.data.message) {
+                setError(err.response.data.message);
+            } else {
+                setError("An error occurred. Please try again.");
+            }
         }
-    }
+    };
 
     return (
         <div className='login-popup'>
@@ -55,11 +54,37 @@ const LoginPopup = ({setShowLogin}) => {
                     <img onClick={() => setShowLogin(false)} src={assets.cross_icon} alt="Close" />
                 </div>
                 <div className="login-popup-inputs">
-                    {currState === "Login" ? null : <input name='name' onChange={onChangeHandler} value={data.name} type="text" placeholder='Your name' required />}
-                    <input name='email' onChange={onChangeHandler} value={data.email} type="text" placeholder='Your email' required />
-                    <input name='password' onChange={onChangeHandler} value={data.password} type="password" placeholder='Password' required />
+                    {currState === "Sign Up" && (
+                        <input
+                            name='name'
+                            onChange={onChangeHandler}
+                            value={data.name}
+                            type="text"
+                            placeholder='Your name'
+                            required
+                            className={error && !data.name ? 'input-error' : ''}
+                        />
+                    )}
+                    <input
+                        name='email'
+                        onChange={onChangeHandler}
+                        value={data.email}
+                        type="email"
+                        placeholder='Your email'
+                        required
+                        className={error && !data.email ? 'input-error' : ''}
+                    />
+                    <input
+                        name='password'
+                        onChange={onChangeHandler}
+                        value={data.password}
+                        type="password"
+                        placeholder='Password'
+                        required
+                        className={error && !data.password ? 'input-error' : ''}
+                    />
                 </div>
-                {error && <div className="login-popup-error">{error}</div>} {/* Error message display */}
+                {error && <div className="login-popup-error">{error}</div>}
                 <button type='submit'>{currState === "Sign Up" ? "Create account" : "Login"}</button>
                 <div className="login-popup-condition">
                     <input type="checkbox" required />
@@ -71,7 +96,7 @@ const LoginPopup = ({setShowLogin}) => {
                 }
             </form>
         </div>
-    )
+    );
 }
 
-export default LoginPopup
+export default LoginPopup;
