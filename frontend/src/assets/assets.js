@@ -58,7 +58,8 @@ import rating_starts from './rating_starts.png'
 import profile_icon from './profile_icon.png'
 import bag_icon from './bag_icon.png'
 import logout_icon from './logout_icon.png'
-import parcel_icon from './parcel_icon.png'
+import order_icon from './order_icon.png'
+import empty_cart from './empty_cart.png'
 
 import promo_1 from './promo_1.png'
 import promo_2 from './promo_2.png'
@@ -89,7 +90,8 @@ export const assets = {
     profile_icon,
     logout_icon,
     bag_icon,
-    parcel_icon
+    order_icon,
+    empty_cart
 }
 
 export const menu_list = [

@@ -4,9 +4,12 @@ import './FoodItem.css';
 import { assets } from '../../assets/assets';
 import { StoreContext } from '../../context/StoreContext';
 
-// Define the formatPrice function for displaying the price
-const formatPrice = (price) => {
-    return (price / 1000).toLocaleString("id-ID", { minimumFractionDigits: 3 }).replace(",", ".");
+const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+    }).format(amount);
 };
 
 const FoodItem = ({ id, name, price, description, image }) => {
@@ -31,7 +34,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
                     <img src={assets.rating_starts} alt="Rating stars" />
                 </div>
                 <p className="food-item-desc">{description}</p>
-                <p className="food-item-price">Rp {(price)}</p>
+                <p className="food-item-price">{formatCurrency(price)}</p>
             </div>
         </div>
     );

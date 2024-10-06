@@ -4,6 +4,14 @@ import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0
+  }).format(amount);
+};
+
 const PlaceOrder = () => {
   const { getTotalCartAmount, token, food_list, cartItems, url, discount } = useContext(StoreContext);
 
@@ -68,14 +76,14 @@ const PlaceOrder = () => {
   return (
     <form onSubmit={placeOrder} className="place-order">
       <div className="place-order-left">
-        <p className="title">Customer Information</p>
+        <p className="title">Informasi Pelanggan</p>
         <div className="multi-fields">
           <input
             name="name"
             onChange={onChangeHandler}
             value={data.name}
             type="text"
-            placeholder="Name"
+            placeholder="Nama"
             required
           />
           <input
@@ -83,7 +91,7 @@ const PlaceOrder = () => {
             onChange={onChangeHandler}
             value={data.tableNumber}
             type="number"
-            placeholder="Table Number"
+            placeholder="Nomor Meja"
             required
           />
           <input
@@ -91,36 +99,30 @@ const PlaceOrder = () => {
             onChange={onChangeHandler}
             value={data.note}
             type="text"
-            placeholder="Additional Note"
+            placeholder="Catatan Tambahan"
           />
         </div>
       </div>
       <div className="place-order-right">
         <div className="cart-total">
-          <h1>Cart Total</h1>
+          <h1>Total Keranjang</h1>
           <div>
             <div className="cart-total-details">
               <p>Subtotal</p>
-              <p>
-                Rp{" "}
-                {getTotalCartAmount()}
-              </p>
+              <p>{formatCurrency(getTotalCartAmount())}</p>
             </div>
             <hr />
             <div className="cart-total-details">
-              <p>Discount</p>
-              <p>Rp  {discount}</p>
+              <p>Voucher Diskon</p>
+              <p>- {formatCurrency(discount)}</p>
             </div>
             <hr />
             <div className="cart-total-details">
-              <b>Total</b>
-              <b>
-                Rp{" "}
-                {getTotalCartAmount() - discount}
-              </b>
+              <b>Total Pembayaran</b>
+              <b>{formatCurrency(getTotalCartAmount() - discount)}</b>
             </div>
           </div>
-          <button type="submit">PROCEED TO PAYMENT</button>
+          <button type="submit">PROSES PEMBAYARAN</button>
         </div>
       </div>
     </form>

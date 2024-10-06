@@ -17,16 +17,16 @@ const registerUser = async (req, res) => {
         // Checking if the user already exists
         const exist = await userModel.findOne({ email });
         if (exist) {
-            return res.status(400).json({ success: false, message: "User already exists" });
+            return res.status(400).json({ success: false, message: "Pengguna sudah terdaftar. Silakan gunakan email lain." });
         }
 
         // Validating email format & strong password
         if (!validator.isEmail(email)) {
-            return res.status(400).json({ success: false, message: "Please enter a valid email" });
+            return res.status(400).json({ success: false, message: "Masukkan email yang valid." });
         }
 
         if (!validator.isStrongPassword(password)) {
-            return res.status(400).json({ success: false, message: "Password must be at least 8 characters and include uppercase, lowercase, numbers, and special characters" });
+            return res.status(400).json({ success: false, message: "Kata sandi harus minimal 8 karakter dan mencakup huruf besar, huruf kecil, angka, dan karakter khusus." });
         }
 
         // Hashing user password
@@ -45,12 +45,12 @@ const registerUser = async (req, res) => {
         // Creating a JWT token
         const token = createToken(user._id);
 
-        res.status(201).json({ success: true, token });
+        res.status(201).json({ success: true, token, message: "Pendaftaran berhasil! Anda telah masuk." });
     } catch (error) {
         if (process.env.NODE_ENV === 'development') {
             console.log(error);
         }
-        res.status(500).json({ success: false, message: "Error registering user" });
+        res.status(500).json({ success: false, message: "Terjadi kesalahan saat mendaftar. Silakan coba lagi." });
     }
 };
 
@@ -63,24 +63,24 @@ const loginUser = async (req, res) => {
         // Checking if the user exists
         const user = await userModel.findOne({ email });
         if (!user) {
-            return res.status(400).json({ success: false, message: "Invalid email or password" });
+            return res.status(400).json({ success: false, message: "Email atau kata sandi salah. Silakan coba lagi." });
         }
 
         // Comparing the password
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
-            return res.status(400).json({ success: false, message: "Invalid email or password" });
+            return res.status(400).json({ success: false, message: "Email atau kata sandi salah. Silakan coba lagi." });
         }
 
         // Creating a JWT token
         const token = createToken(user._id);
 
-        res.status(200).json({ success: true, token });
+        res.status(200).json({ success: true, token, message: "Berhasil masuk! Selamat datang kembali." });
     } catch (error) {
         if (process.env.NODE_ENV === 'development') {
             console.log(error);
         }
-        res.status(500).json({ success: false, message: "Error logging in" });
+        res.status(500).json({ success: false, message: "Terjadi kesalahan saat masuk. Silakan coba lagi." });
     }
 };
 

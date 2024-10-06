@@ -7,8 +7,8 @@ const Footer = () => {
     <div className='footer' id='footer'>
         <div className='footer-content'>
             <div className="footer-content-left">
-                <img src={assets.logo} alt="" />
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Provident quo totam ab quidem natus id ipsam deserunt sunt? Libero doloremque et debitis explicabo suscipit repellat harum voluptatibus, molestias vitae dignissimos.</p>
+                <img src={assets.logo} alt="logo" className="footer-logo" />
+                <p>Tetap update dengan promo seru dan info terbaru dari kami. Jangan lupa follow media sosial Bujang biar nggak ketinggalan momen seru! See you di next hangout!</p>
                 <div className="footer-social-icons">
                     <img src={assets.facebook_icon} alt="" />
                     <img src={assets.twitter_icon} alt="" />
@@ -16,19 +16,18 @@ const Footer = () => {
                 </div>
             </div>
             <div className="footer-content-center">
-                <h2>COMPANY</h2>
+                <h2>PERUSAHAAN</h2>
                 <ul>
-                    <li>Home</li>
-                    <li>About us</li>
-                    <li>Delivery</li>
-                    <li>Privacy policy</li>
+                    <li>Beranda</li>
+                    <li>Tentang kami</li>
+                    <li>Kebijakan privasi</li>
                 </ul>
             </div>
             <div className="footer-content-right">
-                <h2>GET IN TOUCH</h2>
+                <h2>HUBUNGI KAMI</h2>
                 <ul>
                     <li>+1-212-456-7890</li>
-                    <li>contact@gmail.com</li>
+                    <li>bujang@gmail.com</li>
                 </ul>
             </div>
         </div>

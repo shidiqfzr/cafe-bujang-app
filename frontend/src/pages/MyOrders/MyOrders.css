@@ -17,15 +17,16 @@
     font-size: 14px;
     padding: 10px 20px;
     color: #454545;
-    border: 1px solid tomato;
+    border: 1px solid #ff6347;
 }
 
 .my-orders-order img{
-    width: 50px;
+    width: 40px;
+    height: auto;
 }
 
 .my-orders-order p span{
-    color: tomato;
+    color: #ff6347;
 }
 
 .my-orders-order p b{
@@ -39,8 +40,32 @@
     background-color: #ffe1e1;
     cursor: pointer;
     color: #454545;
+    border-radius: 5px;
 }
 
+.my-orders-order button:hover {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+/* Style for no-orders message */
+.no-orders {
+    text-align: center;
+    padding: 50px;
+    color: #454545;
+}
+
+.no-orders img {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.no-orders p {
+    font-size: 16px;
+    color: #777;
+}
+
+/* Responsive design */
 @media (max-width: 900px) {
     .my-orders-order{
         grid-template-columns: 1fr 2fr 1fr;
@@ -50,5 +75,21 @@
 
     .my-orders-order button{
         font-size: 10px;
+    }
+
+    .no-orders {
+        text-align: center;
+        padding: 30px;
+        color: #454545;
+    }
+
+    .no-orders img {
+        width: 110px;
+        margin-bottom: 20px;
+    }
+    
+    .no-orders p {
+        font-size: 14px;
+        color: #777;
     }
 }

@@ -3,6 +3,14 @@ import "./Cart.css";
 import { StoreContext } from "../../context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0
+  }).format(amount);
+};
+
 const Cart = () => {
   const { cartItems, food_list, removeFromCart, getTotalCartAmount, url, handlePromoCode, discount } =
     useContext(StoreContext);
@@ -13,12 +21,12 @@ const Cart = () => {
     <div className="cart">
       <div className="cart-items">
         <div className="cart-items-title">
-          <p>Items</p>
-          <p>Name</p>
-          <p>Price</p>
-          <p>Quantity</p>
+          <p>Item</p>
+          <p>Nama</p>
+          <p>Harga</p>
+          <p>Jumlah</p>
           <p>Total</p>
-          <p>Remove</p>
+          <p>Hapus</p>
         </div>
         <br />
         <hr />
@@ -29,9 +37,9 @@ const Cart = () => {
                 <div className="cart-items-title cart-items-item">
                   <img src={`${url}/images/${item.image}`} alt={item.name} />
                   <p>{item.name}</p>
-                  <p>Rp {item.price}</p>
+                  <p>{formatCurrency(item.price)}</p>
                   <p className="item-quantity">{cartItems[item._id]}</p>
-                  <p>Rp {item.price * cartItems[item._id]}</p>
+                  <p>{formatCurrency(item.price * cartItems[item._id])}</p>
                   <p onClick={() => removeFromCart(item._id)} className="cross">
                     x
                   </p>
@@ -46,11 +54,11 @@ const Cart = () => {
         <div className="cart-promocode">
           <h2>Voucher</h2>
           <div>
-            <p>If you have a promo code, enter it here</p>
+            <p>Jika kamu memiliki kode promo, masukkan di sini</p>
             <div className="cart-promocode-input">
               <input
                 type="text"
-                placeholder="promo code"
+                placeholder="kode promo"
                 value={enteredPromoCode}
                 onChange={(e) => setEnteredPromoCode(e.target.value)}
               />
@@ -59,25 +67,25 @@ const Cart = () => {
           </div>
         </div>
         <div className="cart-total">
-          <h2>Cart Total</h2>
+          <h2>Total Keranjang</h2>
           <div>
             <div className="cart-total-details">
               <p>Subtotal</p>
-              <p>Rp {getTotalCartAmount()}</p>
+              <p>{formatCurrency(getTotalCartAmount())}</p>
             </div>
             <hr />
             <div className="cart-total-details">
-              <p>Discount</p>
-              <p>Rp {discount}</p>
+              <p>Voucher Diskon</p>
+              <p>- {formatCurrency(discount)}</p>
             </div>
             <hr />
             <div className="cart-total-details">
-              <b>Total</b>
-              <b>Rp {getTotalCartAmount() - discount}</b>
+              <b>Total Pembayaran</b>
+              <b>{formatCurrency(getTotalCartAmount() - discount)}</b>
             </div>
           </div>
           <button onClick={() => navigate("/order")}>
-            PROCEED TO CHECKOUT
+            PROSES PESANAN
           </button>
         </div>
       </div>

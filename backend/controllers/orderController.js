@@ -85,4 +85,25 @@ const userOrders = async (req, res) => {
   }
 }
 
-export { placeOrder, verifyOrder, userOrders };
+// Delete order by ID
+const deleteOrder = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const order = await orderModel.findById(id);
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: "Order not found" });
+    }
+
+    // Remove the order using findByIdAndDelete
+    await orderModel.findByIdAndDelete(id);
+
+    res.status(200).json({ success: true, message: "Order deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Error deleting order" });
+  }
+};
+
+export { placeOrder, verifyOrder, userOrders, deleteOrder };

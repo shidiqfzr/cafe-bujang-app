@@ -6,7 +6,7 @@
     align-items: center;
     gap: 20px;
     padding: 20px 8vw;
-    padding-top: 80px;
+    padding-top: 60px;
     margin-top: 100px;
 }
 
@@ -15,6 +15,11 @@
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
     gap: 80px;
+}
+
+.footer-logo {
+    width: 30%; /* Adjust the width to make it smaller */
+    height: auto; /* Ensures the aspect ratio is maintained */
 }
 
 .footer-content-left, .footer-content-center, .footer-content-right {
@@ -50,7 +55,12 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 750px) {
+    .footer-logo {
+        width: 35%; /* Adjust the width to make it smaller */
+        height: auto; /* Ensures the aspect ratio is maintained */
+    }
+
     .footer-content {
         grid-template-columns: 1fr; /* Stack all sections vertically */
         gap: 30px; /* Adjust gap for better spacing */
