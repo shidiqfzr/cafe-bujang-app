@@ -47,7 +47,10 @@ const StoreContextProvider = (props) => {
     const handlePromoCode = (code) => {
         if (code === "MERDEKA") {
             setPromoCode(code);
-            setDiscount(getTotalCartAmount() * 0.10); // 10% discount
+            setDiscount(getTotalCartAmount() * 0.30); // 30% discount
+        } else if (code === "SPECIAL20") {
+            setPromoCode(code);
+            setDiscount(getTotalCartAmount() * 0.20); // 20% discount
         } else {
             setPromoCode("");
             setDiscount(0);
