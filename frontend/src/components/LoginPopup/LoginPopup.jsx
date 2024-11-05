@@ -60,7 +60,7 @@ const LoginPopup = ({ setShowLogin }) => {
                             onChange={onChangeHandler}
                             value={data.name}
                             type="text"
-                            placeholder='Your name'
+                            placeholder='Nama kamu'
                             required
                             className={error && !data.name ? 'input-error' : ''}
                         />
@@ -70,7 +70,7 @@ const LoginPopup = ({ setShowLogin }) => {
                         onChange={onChangeHandler}
                         value={data.email}
                         type="email"
-                        placeholder='Your email'
+                        placeholder='Email kamu'
                         required
                         className={error && !data.email ? 'input-error' : ''}
                     />
@@ -85,7 +85,7 @@ const LoginPopup = ({ setShowLogin }) => {
                     />
                 </div>
                 {error && <div className="login-popup-error">{error}</div>}
-                <button type='submit'>{currState === "Sign Up" ? "Create account" : "Login"}</button>
+                <button type='submit'>{currState === "Sign Up" ? "Buat akun" : "Masuk"}</button>
                 <div className="login-popup-condition">
                     <input type="checkbox" required />
                     <p>Saya setuju dengan syarat & ketentuan serta kebijakan privasi</p>

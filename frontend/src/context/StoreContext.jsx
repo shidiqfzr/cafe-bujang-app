@@ -60,7 +60,9 @@ const StoreContextProvider = (props) => {
      // Recalculate discount whenever cart or promo code changes
      useEffect(() => {
         if (promoCode === "MERDEKA") {
-            setDiscount(getTotalCartAmount() * 0.10); // 10% discount
+            setDiscount(getTotalCartAmount() * 0.30); // 30% discount
+        } else if (promoCode === "SPECIAL20") {
+            setDiscount(getTotalCartAmount() * 0.20); // 20% discount
         } else {
             setDiscount(0);
         }

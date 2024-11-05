@@ -5,7 +5,7 @@ import validator from "validator";
 
 // Function to create a JWT token with expiration
 const createToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Token expires in 7 days
+    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '12d' }); // Token expires in 7 days
 };
 
 // Register user
