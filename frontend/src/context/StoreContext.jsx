@@ -7,9 +7,15 @@ const StoreContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
     const [promoCode, setPromoCode] = useState("");
     const [discount, setDiscount] = useState(0);
-    const url = "http://localhost:4000";
+    const url = "http://192.168.1.6:4000";
     const [token, setToken] = useState("");
     const [food_list, setFoodList] = useState([]);
+    const [tableNumber, setTableNumber] = useState(localStorage.getItem("tableNumber") || "");
+
+    // Update localStorage whenever tableNumber changes
+    useEffect(() => {
+        localStorage.setItem("tableNumber", tableNumber);
+    }, [tableNumber]);
 
     // Add to cart functionality
     const addToCart = async (itemId) => {
@@ -57,8 +63,8 @@ const StoreContextProvider = (props) => {
         }
     };
 
-     // Recalculate discount whenever cart or promo code changes
-     useEffect(() => {
+    // Recalculate discount whenever cart or promo code changes
+    useEffect(() => {
         if (promoCode === "MERDEKA") {
             setDiscount(getTotalCartAmount() * 0.30); // 30% discount
         } else if (promoCode === "SPECIAL20") {
@@ -110,7 +116,9 @@ const StoreContextProvider = (props) => {
         setToken,
         handlePromoCode, // Expose the promo code handler
         discount,        // Expose the discount
-        promoCode        // Expose the applied promo code
+        promoCode,       // Expose the applied promo code
+        tableNumber,     // Expose the table number
+        setTableNumber, 
     };
 
     return (

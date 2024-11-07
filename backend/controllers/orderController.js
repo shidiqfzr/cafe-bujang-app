@@ -1,20 +1,40 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import Stripe from "stripe";
+import crypto from "crypto";  // For generating a unique identifier
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// Placing user order for frontend
 const placeOrder = async (req, res) => {
-  const frontend_url = "http://localhost:5173";
+  const frontend_url = "http://192.168.1.6:5173";
 
   try {
+    const { discount = 0 } = req.body;
+
     const newOrder = new orderModel({
       userId: req.body.userId,
       items: req.body.items,
+      discount: discount, 
       amount: req.body.amount,
-      address: req.body.address
+      tableNumber: req.body.tableNumber, 
+      note: req.body.note,               
+      paymentMethod: req.body.paymentMethod || "Online", 
     });
+
+    // Generate a simplified invoice number based on the order date
+    const orderDate = new Date();
+    const year = orderDate.getFullYear();
+    const month = String(orderDate.getMonth() + 1).padStart(2, "0");
+    const day = String(orderDate.getDate()).padStart(2, "0");
+
+    // Generate a short unique identifier for the order
+    const shortId = crypto.randomBytes(2).toString("hex").toUpperCase();
+
+    // Format the invoice number as "INV-YYYYMMDD-XXXX"
+    const invoiceNumber = `E-${year}${month}${day}-${shortId}`;
+
+    // Set the invoice number to the new order
+    newOrder.invoiceNumber = invoiceNumber;
 
     await newOrder.save();
 
@@ -55,6 +75,53 @@ const placeOrder = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Error placing order" });
+  }
+};
+
+const placeManualOrder = async (req, res) => {
+  try {
+    const { discount = 0 } = req.body;
+
+    const newOrder = new orderModel({
+      userId: req.body.userId,
+      items: req.body.items,
+      discount: discount, 
+      amount: req.body.amount,
+      paymentMethod: "Manual",
+      tableNumber: req.body.tableNumber, 
+      note: req.body.note,               
+      paymentMethod: "Manual", 
+      payment: false, 
+    });
+
+    // Generate a simplified invoice number based on the order date
+    const orderDate = new Date();
+    const year = orderDate.getFullYear();
+    const month = String(orderDate.getMonth() + 1).padStart(2, "0");
+    const day = String(orderDate.getDate()).padStart(2, "0");
+
+    // Generate a short unique identifier for the order
+    const shortId = crypto.randomBytes(2).toString("hex").toUpperCase();
+
+    // Format the invoice number as "INV-YYYYMMDD-XXXX"
+    const invoiceNumber = `M-${year}${month}${day}-${shortId}`;
+    newOrder.invoiceNumber = invoiceNumber;
+
+    // Save the order to the database
+    await newOrder.save();
+
+    // Clear the user's cart after placing the order
+    await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
+
+    res.status(200).json({
+      success: true,
+      message: "Order placed successfully with manual payment",
+      orderId: newOrder._id,
+      invoiceNumber: invoiceNumber,
+    });
+  } catch (error) {
+    console.error("Error placing manual order:", error);
+    res.status(500).json({ success: false, message: "Error placing manual order" });
   }
 };
 
@@ -106,4 +173,4 @@ const deleteOrder = async (req, res) => {
   }
 };
 
-export { placeOrder, verifyOrder, userOrders, deleteOrder };
+export { placeOrder, placeManualOrder, verifyOrder, userOrders, deleteOrder };

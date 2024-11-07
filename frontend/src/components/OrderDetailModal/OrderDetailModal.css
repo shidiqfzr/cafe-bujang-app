@@ -6,12 +6,14 @@
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Align closer to the top */
     justify-content: center;
     z-index: 1000;
+    padding-top: 100px; /* Add padding to control top position */
 }
   
 .modal-content {
+    position: relative;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -22,7 +24,30 @@
     max-height: 80vh; /* Limit height for mobile */
 }
 
-.modal-content h3, .modal-content h4 {
+.close-icon {
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 30px;
+    font-weight: bold;
+    color: #ff6347;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-icon:hover {
+    color: #ff4d4d;
+}
+
+.modal-content h3 {
+    padding-bottom: 10px;
+    color: #ff6347;
+}
+
+.modal-content h4 {
+    margin-top: 20px;
     margin-bottom: 10px;
     color: #ff6347;
 }
@@ -39,10 +64,12 @@
 }
 
 .item {
-    display: flex;
-    justify-content: space-between; /* Align items evenly */
-    padding: 8px 0;
-    border-bottom: 1px solid #e0e0e0; /* Add separation between items */
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto; 
+    font-size: 16px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .item-name {
@@ -55,10 +82,13 @@
     color: #777;
 }
 
-.total-price {
+.voucher-discount, .total-price {
+    display: flex;
+    justify-content: space-between; 
+    padding-right: 0px;
     font-size: 16px;
+    align-items: center;
     margin-top: 10px;
-    color: #ff6347;
     font-weight: 600;
 }
 
@@ -80,27 +110,52 @@
 /* Status color styling */
 .status {
     font-weight: bold;
-}
-
-.status.completed {
-    color: green;
-}
-
-.status.pending {
-    color: orange;
-}
-
-.status.cancelled {
-    color: red;
+    color: #ff6347
 }
 
 @media (max-width: 600px) {
+    .modal-content h3 {
+        margin-bottom: 10px;
+        color: #ff6347;
+    }
+    
+    .modal-content h4 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: #ff6347;
+    }
+    
+    .modal-content p {
+        margin: 5px 0;
+        font-size: 13px;
+        color: #454545;
+    }
+
     .modal-content {
         padding: 15px;
     }
 
     .item-list {
-        font-size: 14px; /* Smaller font for mobile */
+        font-size: 12px; /* Smaller font for mobile */
+    }
+
+    .item {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr auto; 
+        align-items: center;
+        font-size: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .voucher-discount, .total-price {
+        display: flex;
+        justify-content: space-between;
+        padding-right: 0px;
+        font-size: 12px;
+        align-items: center;
+        margin-top: 10px;
+        font-weight: 600;
     }
 
     .close-button {

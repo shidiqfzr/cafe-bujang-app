@@ -35,21 +35,8 @@ const MyOrders = () => {
         (a, b) => new Date(b.date) - new Date(a.date)
       );
 
-      // Generate an invoice number with year, month, day, and index
-      const ordersWithInvoiceNumbers = sortedData.map((order, index) => {
-        const orderDate = new Date(order.date);
-        const year = orderDate.getFullYear();
-        const month = String(orderDate.getMonth() + 1).padStart(2, "0");
-        const day = String(orderDate.getDate()).padStart(2, "0");
-
-        return {
-          ...order,
-          invoiceNumber: `INV-${year}${month}${day}-${index + 1}`,
-        };
-      });
-
-      setData(ordersWithInvoiceNumbers);
-      setFilteredData(ordersWithInvoiceNumbers);
+      setData(sortedData);
+      setFilteredData(sortedData);
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
@@ -106,7 +93,6 @@ const MyOrders = () => {
     <div className="my-orders">
       <h2>Riwayat Pesanan</h2>
 
-      {/* Date filter inputs */}
       <div className="date-filter">
         <input
           type="date"

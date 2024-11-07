@@ -30,6 +30,6 @@ app.get("/",(req,res)=>{
     res.send("API Working")
 })
 
-app.listen(port,()=>{
-    console.log(`Server Started on http:localhost:${port}`)
-})
+app.listen(port, () => {
+    console.log(`Server started on http://192.168.1.6:${port}`);
+});

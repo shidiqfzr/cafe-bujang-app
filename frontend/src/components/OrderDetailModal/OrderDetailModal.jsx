@@ -2,22 +2,27 @@ import React from 'react';
 import './OrderDetailModal.css';
 
 const OrderDetailModal = ({ order, onClose }) => {
-  // Function to format the order date
-  const formatOrderDate = (dateString) => {
+  const formatOrderDateTime = (dateString) => {
     const date = new Date(dateString);
-    // Check if the date is valid
     if (!isNaN(date.getTime())) {
-      return date.toLocaleDateString('id-ID'); // Format date in Indonesian style
+      const dateFormatted = date.toLocaleDateString('id-ID');
+      const timeFormatted = date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+      return `${dateFormatted} ${timeFormatted}`;
     } else {
-      return 'Tanggal tidak valid'; // Fallback for invalid date
+      return 'Tanggal tidak valid';
     }
   };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <button className="close-icon" onClick={onClose}>&times;</button>
         <h3>Detail Pesanan</h3>
-        <p><strong>Tanggal Pesanan:</strong> {formatOrderDate(order.date)}</p>
+        <p><strong>Nomor Faktur:</strong> {order.invoiceNumber}</p>
+        <p><strong>Tanggal & Waktu Pesanan:</strong> {formatOrderDateTime(order.date)}</p>
+        <p><strong>Nomor Meja:</strong> {order.tableNumber}</p>
+        <p><strong>Catatan Tambahan:</strong> {order.note}</p>
+        <p><strong>Metode Pembayaran:</strong> {order.paymentMethod}</p>
         <p><strong>Status:</strong> <span className={`status ${order.status.toLowerCase()}`}>{order.status}</span></p>
         
         <h4>Items:</h4>
@@ -25,15 +30,14 @@ const OrderDetailModal = ({ order, onClose }) => {
           {order.items.map((item, index) => (
             <li key={index} className="item">
               <span className="item-name">{item.name}</span>
+              <span className="item-price">{formatCurrency(item.price)}</span>
               <span className="item-quantity"> x {item.quantity}</span>
-              <span className="item-price">@ {formatCurrency(item.price)}</span>
               <span className="item-total"> = {formatCurrency(item.quantity * item.price)}</span>
             </li>
           ))}
         </ul>
-        
-        <p className="total-price"><strong>Total Harga:</strong> {formatCurrency(order.amount)}</p>
-        <button className="close-button" onClick={onClose}>Tutup</button>
+        <p className="voucher-discount"><strong>Voucher Diskon:</strong> - {formatCurrency(order.discount)}</p>
+        <p className="total-price"><strong>Total Harga:</strong>{formatCurrency(order.amount)}</p>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 .cart {
-  margin-top: 100px;
+  margin-top: 60px;
 }
 
 .cart-items-title {
@@ -40,6 +40,11 @@
   padding: 0 20px;
 }
 
+.cart-bottom-left {
+  flex: 1;
+  max-width: 600px;  
+}
+
 .cart-bottom {
   margin-top: 60px;
   display: flex;
@@ -51,12 +56,74 @@
     padding-bottom: 8px;
 }
 
+.customer-info h2 {
+  padding-bottom: 20px;
+}
+
+.customer-info {
+  width: 100%;
+  max-width: max(30%, 500px);
+}
+
+.customer-info .title {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.customer-info label {
+  font-size: 16px;       
+  font-weight: 500;      
+  color: tomato;           
+  margin-bottom: 5px;   
+  display: block;        
+}
+
+.customer-info input {
+  margin-bottom: 15px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #c5c5c5;
+  border-radius: 4px;
+  outline-color: tomato;
+  appearance: none; /* Remove default dropdown icon */
+  position: relative;
+}
+
+.customer-info select {
+  background: url("data:image/svg+xml,%3Csvg width='10' height='5' viewBox='0 0 10 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0l5 5 5-5H0z' fill='%23c5c5c5'/%3E%3C/svg%3E") no-repeat right 10px center;
+  margin-bottom: 15px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #c5c5c5;
+  border-radius: 4px;
+  outline-color: tomato;
+  appearance: none; /* Remove default dropdown icon */
+  position: relative;
+}
+
+.customer-info select:hover,
+.customer-info select:focus {
+  border-color: #ff6347; /* Change border color on hover and focus */
+}
+
+/* Adjust option padding for better visibility */
+.customer-info select option {
+  padding: 10px;
+  font-size: 16px;
+}
+
+.customer-info .multi-fields {
+  gap: 10px;
+}
+
 .cart-promocode {
   flex: 1;
 }
 
 .cart-promocode h2 {
-    padding-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .cart-promocode p {
@@ -86,6 +153,7 @@
   border: none;
   color: white;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .cart-total {
@@ -157,6 +225,14 @@
   .cart-items-item p {
     font-size: 10px; /* Smaller text for items */
   }
+
+  .customer-info label {
+    font-size: 14px;       
+    font-weight: 500;      
+    color: tomato;           
+    margin-bottom: 5px;   
+    display: block;        
+  }
 }
 
 /* Media query for mobile devices (hides image and "Items" title) */
@@ -201,7 +277,7 @@
     font-size: 14px; 
   }
 
-  .cart-total {
+  .customer-info, .cart-promocode, .cart-total {
     font-size: 14px; 
   }
 
