@@ -29,7 +29,7 @@ const Cart = () => {
   const [customerInfo, setCustomerInfo] = useState({
     tableNumber: tableNumber,
     note: "",
-    paymentMethod: "Electronic", // Default to electronic
+    paymentMethod: "Elektronik", // Default to electronic
   });
   const navigate = useNavigate();
 
@@ -69,7 +69,7 @@ const Cart = () => {
     };
 
     try {
-      if (customerInfo.paymentMethod === "Electronic") {
+      if (customerInfo.paymentMethod === "Elektronik") {
         // Electronic payment
         const response = await axios.post(url + "/api/order/place", orderData, {
           headers: { token },
@@ -176,7 +176,7 @@ const Cart = () => {
               value={customerInfo.paymentMethod}
               onChange={onChangeHandler}
             >
-              <option value="Electronic">Pembayaran Elektronik</option>
+              <option value="Elektronik">Pembayaran Elektronik</option>
               <option value="Manual">Pembayaran Tunai</option>
             </select>
           </div>

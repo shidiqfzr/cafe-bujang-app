@@ -105,6 +105,25 @@
     cursor: pointer;
 }
 
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container input {
+    width: 100%;
+    padding-right: 30px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    color: #808080;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }

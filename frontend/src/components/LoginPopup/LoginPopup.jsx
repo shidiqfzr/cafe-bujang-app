@@ -2,24 +2,29 @@ import React, { useContext, useState } from 'react';
 import './LoginPopup.css';
 import { assets } from '../../assets/assets';
 import { StoreContext } from '../../context/StoreContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 
 const LoginPopup = ({ setShowLogin }) => {
     const { url, setToken } = useContext(StoreContext);
-
     const [currState, setCurrState] = useState("Login");
     const [data, setData] = useState({
         name: "",
         email: "",
         password: ""
     });
-
     const [error, setError] = useState("");
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Password visibility state
 
     const onChangeHandler = (event) => {
         const name = event.target.name;
         const value = event.target.value;
         setData(prevData => ({ ...prevData, [name]: value }));
+    };
+
+    const togglePasswordVisibility = () => {
+        setIsPasswordVisible(prevState => !prevState);
     };
 
     const onLogin = async (event) => {
@@ -74,15 +79,20 @@ const LoginPopup = ({ setShowLogin }) => {
                         required
                         className={error && !data.email ? 'input-error' : ''}
                     />
-                    <input
-                        name='password'
-                        onChange={onChangeHandler}
-                        value={data.password}
-                        type="password"
-                        placeholder='Password'
-                        required
-                        className={error && !data.password ? 'input-error' : ''}
-                    />
+                    <div className="password-container">
+                        <input
+                            name='password'
+                            onChange={onChangeHandler}
+                            value={data.password}
+                            type={isPasswordVisible ? "text" : "password"}
+                            placeholder='Password'
+                            required
+                            className={error && !data.password ? 'input-error' : ''}
+                        />
+                        <span className="toggle-password" onClick={togglePasswordVisibility}>
+                            <FontAwesomeIcon icon={isPasswordVisible ? faEyeSlash : faEye} />
+                        </span>
+                    </div>
                 </div>
                 {error && <div className="login-popup-error">{error}</div>}
                 <button type='submit'>{currState === "Sign Up" ? "Buat akun" : "Masuk"}</button>

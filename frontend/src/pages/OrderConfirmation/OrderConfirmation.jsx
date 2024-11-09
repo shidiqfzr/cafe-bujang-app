@@ -84,12 +84,12 @@ const OrderConfirmation = () => {
 
   return (
     <div className="order-confirmation">
-      <h2>Konfirmasi Pesanan</h2>
+      <h2>Konfirmasi Pembayaran</h2>
 
       {order && (
         <>
           <p className="payment-instruction">
-            Silakan tunjukkan informasi pesanan ini ke kasir untuk melakukan pembayaran.
+            Silakan tunjukkan informasi pesanan ini ke kasir untuk melakukan pembayaran tunai.
           </p>
 
           <div className="order-card">
