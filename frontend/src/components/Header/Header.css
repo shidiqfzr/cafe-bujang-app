@@ -8,6 +8,7 @@
   margin: 0 auto; /* Center carousel */
   overflow: hidden; /* Hide overflow for a cleaner look */
   border-radius: 0.5rem; /* Rounded corners */
+  margin-top: 40px;
 }
 
 .slide {
@@ -73,6 +74,7 @@
   .carousel {
     height: 250px; /* Reduce height for smaller screens */
     border-radius: 0.3rem; /* Slightly smaller radius */
+    margin-top: 0px;
   }
 
   .slide {

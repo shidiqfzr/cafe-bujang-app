@@ -9,6 +9,7 @@
 
 .login-popup-container {
     place-self: center;
+    transform: translateY(-20%);
     width: max(23vw, 330px);
     color: #808080;
     background-color: white;

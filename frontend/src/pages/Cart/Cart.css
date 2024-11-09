@@ -46,7 +46,7 @@
 }
 
 .cart-bottom {
-  margin-top: 60px;
+  margin-top: 50px;
   display: flex;
   justify-content: space-between;
   gap: max(12vw, 20px);

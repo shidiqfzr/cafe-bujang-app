@@ -23,6 +23,7 @@ const Cart = () => {
     discount,
     token,
     tableNumber,
+    setInvoiceNumber,
   } = useContext(StoreContext);
   const [enteredPromoCode, setEnteredPromoCode] = useState("");
   const [customerInfo, setCustomerInfo] = useState({
@@ -91,15 +92,17 @@ const Cart = () => {
         );
 
         if (response.data.success) {
-          alert("Order placed successfully for manual payment!");
-          navigate("/order-confirmation"); // Redirect to a confirmation page if needed
+          navigate(`/order-confirmation/${response.data.orderId}`);
         } else {
           alert("Error: " + response.data.message);
         }
       }
     } catch (error) {
-      console.error("Error placing order:", error);
-      alert("An error occurred while placing the order. Please try again.");
+      if (error.response && error.response.status === 401) {
+        alert("Silahkan login terlebih dahulu jika ingin melakukan pemesanan.");
+      } else {
+        alert("Terjadi kesalahan saat melakukan pemesanan. Silakan coba lagi.");
+      }
     }
   };
 
@@ -174,7 +177,7 @@ const Cart = () => {
               onChange={onChangeHandler}
             >
               <option value="Electronic">Pembayaran Elektronik</option>
-              <option value="Manual">Pembayaran Manual</option>
+              <option value="Manual">Pembayaran Tunai</option>
             </select>
           </div>
 

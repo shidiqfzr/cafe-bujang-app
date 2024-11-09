@@ -19,13 +19,13 @@ const OrderDetailModal = ({ order, onClose }) => {
         <button className="close-icon" onClick={onClose}>&times;</button>
         <h3>Detail Pesanan</h3>
         <p><strong>Nomor Faktur:</strong> {order.invoiceNumber}</p>
-        <p><strong>Tanggal & Waktu Pesanan:</strong> {formatOrderDateTime(order.date)}</p>
-        <p><strong>Nomor Meja:</strong> {order.tableNumber}</p>
-        <p><strong>Catatan Tambahan:</strong> {order.note}</p>
+        <p><strong>Tanggal & Waktu:</strong> {formatOrderDateTime(order.date)}</p>
         <p><strong>Metode Pembayaran:</strong> {order.paymentMethod}</p>
+        <p><strong>Nomor Meja:</strong> {order.tableNumber}</p>
+        <p><strong>Catatan Tambahan:</strong> {order.note || "-"}</p>
         <p><strong>Status:</strong> <span className={`status ${order.status.toLowerCase()}`}>{order.status}</span></p>
         
-        <h4>Items:</h4>
+        <h4>Item Pesanan</h4>
         <ul className="item-list">
           {order.items.map((item, index) => (
             <li key={index} className="item">
@@ -35,6 +35,7 @@ const OrderDetailModal = ({ order, onClose }) => {
               <span className="item-total"> = {formatCurrency(item.quantity * item.price)}</span>
             </li>
           ))}
+          <hr />
         </ul>
         <p className="voucher-discount"><strong>Voucher Diskon:</strong> - {formatCurrency(order.discount)}</p>
         <p className="total-price"><strong>Total Harga:</strong>{formatCurrency(order.amount)}</p>

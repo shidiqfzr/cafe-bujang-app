@@ -63,6 +63,12 @@
     margin: 10px 0;
 }
 
+.item-list hr {
+    height: 1px;
+    background-color: #e2e2e2;
+    border: none;
+}
+
 .item {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr auto; 
@@ -78,7 +84,7 @@
 }
 
 .item-quantity, .item-price, .item-total {
-    margin-left: 10px; /* Spacing between elements */
+    margin-left: 10px; 
     color: #777;
 }
 

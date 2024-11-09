@@ -31,5 +31,5 @@ app.get("/",(req,res)=>{
 })
 
 app.listen(port, () => {
-    console.log(`Server started on http://192.168.1.6:${port}`);
+    console.log(`Server started on http://192.168.196.22:${port}`);
 });

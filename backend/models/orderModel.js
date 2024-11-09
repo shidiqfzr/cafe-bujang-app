@@ -16,7 +16,7 @@ const orderSchema = new mongoose.Schema({
     tableNumber: { type: Number, required: true },
     note: { type: String, default: '-' },
     paymentMethod: { type: String, required: true },
-    status: { type: String, default: "Pesanan Diproses" },
+    status: { type: String, default: "Diproses" },      // Pending, Diproses, Selesai
     date: { type: Date, default: Date.now },
     payment: { type: Boolean, default: false }
 });

@@ -52,18 +52,6 @@ const placeOrder = async (req, res) => {
       quantity: item.quantity,
     }));
 
-    // Add a delivery charge line item if necessary
-    line_items.push({
-      price_data: {
-        currency: "usd",
-        product_data: {
-          name: "Delivery Charge",
-        },
-        unit_amount: 0,
-      },
-      quantity: 1,
-    });
-
     const session = await stripe.checkout.sessions.create({
       line_items: line_items,
       mode: 'payment',
@@ -87,10 +75,10 @@ const placeManualOrder = async (req, res) => {
       items: req.body.items,
       discount: discount, 
       amount: req.body.amount,
-      paymentMethod: "Manual",
+      paymentMethod: "Tunai",
       tableNumber: req.body.tableNumber, 
       note: req.body.note,               
-      paymentMethod: "Manual", 
+      status: "Pending", 
       payment: false, 
     });
 
@@ -124,6 +112,26 @@ const placeManualOrder = async (req, res) => {
     res.status(500).json({ success: false, message: "Error placing manual order" });
   }
 };
+
+const getOrderById = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const order = await orderModel.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: "Order not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      order,
+    });
+  } catch (error) {
+    console.error("Error fetching order by ID:", error);
+    res.status(500).json({ success: false, message: "Error fetching order" });
+  }
+};
+
 
 const verifyOrder = async (req, res) => {
   const { orderId, success } = req.body;
@@ -173,4 +181,4 @@ const deleteOrder = async (req, res) => {
   }
 };
 
-export { placeOrder, placeManualOrder, verifyOrder, userOrders, deleteOrder };
+export { placeOrder, placeManualOrder, getOrderById, verifyOrder, userOrders, deleteOrder };

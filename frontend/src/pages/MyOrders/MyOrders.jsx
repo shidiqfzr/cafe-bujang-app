@@ -30,8 +30,11 @@ const MyOrders = () => {
         { headers: { token } }
       );
 
+      // Filter out orders with "Pending" status
+      const filteredOrders = response.data.data.filter(order => order.status !== "Pending");
+
       // Sort orders by date in descending order (newest first)
-      const sortedData = response.data.data.sort(
+      const sortedData = filteredOrders.sort(
         (a, b) => new Date(b.date) - new Date(a.date)
       );
 
@@ -62,6 +65,9 @@ const MyOrders = () => {
 
   // Delete order
   const handleDelete = async (orderId) => {
+    const isConfirmed = window.confirm("Apakah Anda yakin ingin menghapus pesanan ini?");
+    if (!isConfirmed) return;
+    
     try {
       await axios.delete(`${url}/api/order/delete/${orderId}`, {
         headers: { token },
@@ -121,14 +127,6 @@ const MyOrders = () => {
           filteredData.map((order, index) => (
             <div key={index} className="my-orders-order">
               <img src={assets.order_icon} alt="" />
-
-              {/* <p>
-                {order.items.map((item, idx) =>
-                  idx === order.items.length - 1
-                    ? `${item.name} x ${item.quantity}`
-                    : `${item.name} x ${item.quantity}, `
-                )}
-              </p> */}
 
               <p>{order.invoiceNumber}</p>
               <p>
