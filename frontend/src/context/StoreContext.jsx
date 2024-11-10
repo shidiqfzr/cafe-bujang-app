@@ -4,10 +4,10 @@ import axios from "axios";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
+    const url = `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}`;
     const [cartItems, setCartItems] = useState({});
     const [promoCode, setPromoCode] = useState("");
     const [discount, setDiscount] = useState(0);
-    const url = "http://192.168.196.22:4000";
     const [token, setToken] = useState("");
     const [food_list, setFoodList] = useState([]);
     const [tableNumber, setTableNumber] = useState(localStorage.getItem("tableNumber") || "");
