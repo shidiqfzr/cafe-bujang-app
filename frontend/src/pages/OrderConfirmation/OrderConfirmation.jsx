@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { StoreContext } from "../../context/StoreContext";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 import "./OrderConfirmation.css";
 
 const formatCurrency = (amount) => {
@@ -57,19 +58,44 @@ const OrderConfirmation = () => {
   }, [orderId, url, navigate]);
 
   const handleCancelOrder = async () => {
-    const isConfirmed = window.confirm(
-      "Apakah Anda yakin ingin membatalkan pesanan ini?"
-    );
-    if (!isConfirmed) return;
+    // Show confirmation dialog
+    const result = await Swal.fire({
+      title: "Batalkan Pesanan?",
+      text: "Apakah Anda yakin ingin membatalkan pesanan ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Ya, batalkan",
+      cancelButtonText: "Tidak",
+      customClass: {
+        popup: "small-swal-popup",
+        title: "small-swal-title",
+        content: "small-swal-content",
+      },
+    });
 
-    try {
-      await axios.delete(`${url}/api/order/delete/${orderId}`, {
-        headers: { token },
-      });
-      navigate("/");
-    } catch (error) {
-      console.error("Error deleting order:", error);
-      setError("Gagal membatalkan pesanan. Silakan coba lagi.");
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`${url}/api/order/delete/${orderId}`, {
+          headers: { token },
+        });
+        Swal.fire({
+          title: "Dibatalkan!",
+          text: "Pesanan berhasil dibatalkan.",
+          icon: "success",
+          confirmButtonColor: "#3085d6",
+          customClass: {
+            popup: "small-swal-popup",
+            title: "small-swal-title",
+            content: "small-swal-content",
+          },
+        });
+        navigate("/");
+      } catch (error) {
+        console.error("Error deleting order:", error);
+        Swal.fire("Gagal", "Gagal membatalkan pesanan. Silakan coba lagi.", "error");
+      }
     }
   };
 
@@ -126,8 +152,7 @@ const OrderConfirmation = () => {
           <div className="payment-summary">
             <h3>Ringkasan Pembayaran</h3>
             <p>
-              <strong>Voucher Diskon:</strong> -{" "}
-              {formatCurrency(order.discount)}
+              <strong>Voucher Diskon:</strong> - {" "}{formatCurrency(order.discount)}
             </p>
             <p>
               <strong>Total Harga:</strong> <strong>{formatCurrency(order.amount)}</strong>

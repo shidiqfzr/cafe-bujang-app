@@ -130,7 +130,7 @@ ul {
 
   .item-confirmation {
     display: grid;
-    grid-template-columns: 2.5fr 1.5fr 0.5fr auto;
+    grid-template-columns: 2fr 1.2fr 0.5fr auto;
     align-items: center;
     font-size: 1em;
     padding: 10px 0;
@@ -143,5 +143,18 @@ ul {
 
   .cancel-button {
     width: 100%;
+  }
+
+  .small-swal-popup {
+    width: 300px;
+    padding: 10px;
+  }
+  
+  .small-swal-title {
+    font-size: 16px;
+  }
+  
+  .small-swal-content {
+    font-size: 14px;
   }
 }

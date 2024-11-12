@@ -3,6 +3,7 @@ import './Navbar.css'
 import { assets } from '../../assets/assets'
 import { Link, useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
+import Swal from 'sweetalert2';
 
 const Navbar = ({setShowLogin}) => {
 
@@ -13,9 +14,38 @@ const Navbar = ({setShowLogin}) => {
     const navigate = useNavigate();
 
     const logout = () => {
-        localStorage.removeItem("token");
-        setToken("");
-        navigate("/")
+        Swal.fire({
+            title: "Keluar dari aplikasi?",
+            text: "Apakah Anda yakin ingin logout?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Ya, keluar",
+            cancelButtonText: "Batal",
+            customClass: {
+                popup: "small-swal-popup",
+                title: "small-swal-title",
+                content: "small-swal-content",
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem("token");
+                setToken("");
+                navigate("/");
+                Swal.fire({
+                    title: "Berhasil",
+                    text: "Anda telah logout.",
+                    icon: "success",
+                    confirmButtonColor: "#3085d6",
+                    customClass: {
+                        popup: "small-swal-popup",
+                        title: "small-swal-title",
+                        content: "small-swal-content",
+                    },
+                });
+            }
+        })
     }
 
   return (

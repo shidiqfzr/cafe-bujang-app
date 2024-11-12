@@ -4,6 +4,7 @@ import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
 import { assets } from "../../assets/assets";
 import OrderDetailModal from "../../components/OrderDetailModal/OrderDetailModal";
+import Swal from "sweetalert2";
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat("id-ID", {
@@ -31,7 +32,9 @@ const MyOrders = () => {
       );
 
       // Filter out orders with "Pending" status
-      const filteredOrders = response.data.data.filter(order => order.status !== "Pending");
+      const filteredOrders = response.data.data.filter(
+        (order) => order.status !== "Pending"
+      );
 
       // Sort orders by date in descending order (newest first)
       const sortedData = filteredOrders.sort(
@@ -64,18 +67,59 @@ const MyOrders = () => {
   };
 
   // Delete order
-  const handleDelete = async (orderId) => {
-    const isConfirmed = window.confirm("Apakah Anda yakin ingin menghapus pesanan ini?");
-    if (!isConfirmed) return;
-    
-    try {
-      await axios.delete(`${url}/api/order/delete/${orderId}`, {
-        headers: { token },
+  const handleDelete = async (order) => {
+    if (order.status !== "Selesai") {
+      Swal.fire({
+        title: "Tidak Dapat Menghapus Pesanan",
+        text: "Hanya pesanan dengan status 'Selesai' yang dapat dihapus.",
+        icon: "info",
+        confirmButtonText: "OK",
+        customClass: {
+          popup: "small-swal-popup",
+          title: "small-swal-title",
+          content: "small-swal-content",
+        },
       });
-      setData(data.filter((order) => order._id !== orderId));
-      setFilteredData(filteredData.filter((order) => order._id !== orderId));
-    } catch (error) {
-      console.error("Error deleting order:", error);
+      return;
+    }
+
+    const result = await Swal.fire({
+      title: "Hapus Pesanan?",
+      text: "Apakah Anda yakin ingin menghapus riwayat pesanan ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Batal",
+      customClass: {
+        popup: "small-swal-popup",
+        title: "small-swal-title",
+        content: "small-swal-content",
+      },
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`${url}/api/order/delete/${order._id}`, {
+          headers: { token },
+        });
+        setData(data.filter((o) => o._id !== order._id));
+        setFilteredData(filteredData.filter((o) => o._id !== order._id));
+        Swal.fire({
+          title: "Dihapus!",
+          text: "Riwayat pesanan berhasil dihapus.",
+          icon: "success",
+          customClass: {
+            popup: "small-swal-popup",
+            title: "small-swal-title",
+            content: "small-swal-content",
+          },
+        });
+      } catch (error) {
+        console.error("Error deleting order:", error);
+        Swal.fire("Gagal", "Gagal menghapus pesanan. Silakan coba lagi.", "error");
+      }
     }
   };
 
@@ -136,7 +180,7 @@ const MyOrders = () => {
               <p>{formatCurrency(order.amount)}</p>
               <div className="button-group">
                 <button onClick={() => openOrderDetail(order)}>Detail</button>
-                <button onClick={() => handleDelete(order._id)}>Hapus</button>
+                <button onClick={() => handleDelete(order)}>Hapus</button>
               </div>
             </div>
           ))

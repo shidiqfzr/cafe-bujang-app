@@ -3,6 +3,7 @@ import "./Cart.css";
 import { StoreContext } from "../../context/StoreContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat("id-ID", {
@@ -49,6 +50,22 @@ const Cart = () => {
   // Place order function
   const placeOrder = async (event) => {
     event.preventDefault();
+
+    // Check if the cart is empty
+    if (getTotalCartAmount() === 0) {
+      Swal.fire({
+        title: "Keranjang Kosong",
+        text: "Silahkan tambahkan menu ke keranjang sebelum melanjutkan pemesanan.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        customClass: {
+          popup: "small-swal-popup",
+          title: "small-swal-title",
+          content: "small-swal-content",
+        },
+      });
+      return; // Exit the function early if the cart is empty
+    }
 
     // Create order items array
     let orderItems = [];
@@ -99,7 +116,16 @@ const Cart = () => {
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
-        alert("Silahkan login terlebih dahulu jika ingin melakukan pemesanan.");
+        Swal.fire({
+          title: "Login Diperlukan",
+          text: "Silahkan login terlebih dahulu jika ingin melakukan pemesanan.",
+          icon: "warning",
+          customClass: {
+            popup: "small-swal-popup",
+            title: "small-swal-title",
+            content: "small-swal-content",
+          },
+        });
       } else {
         alert("Terjadi kesalahan saat melakukan pemesanan. Silakan coba lagi.");
       }
