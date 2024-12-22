@@ -6,7 +6,7 @@ import crypto from "crypto";  // For generating a unique identifier
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const placeOrder = async (req, res) => {
-  const frontend_url = "http://192.168.196.22:5173";
+  const frontend_url = "http://192.168.6.22:5173";
 
   try {
     const { discount = 0 } = req.body;

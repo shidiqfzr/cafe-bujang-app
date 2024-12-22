@@ -1,10 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from "react-icons/bs";
+import { useSwipeable } from "react-swipeable"; // Import useSwipeable
 import "./Header.css";
-
-// Import all promotional images
-import { promoImages } from '../../assets/assets';
+import { promoImages } from "../../assets/assets";
 
 export const Header = () => {
   const [slide, setSlide] = useState(0);
@@ -17,8 +16,16 @@ export const Header = () => {
     setSlide(slide === 0 ? promoImages.length - 1 : slide - 1);
   };
 
+  // Handlers for swipe actions
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: nextSlide,
+    onSwipedRight: prevSlide,
+    preventDefaultTouchmoveEvent: true, // Prevent browser default touch actions
+    trackMouse: true, // Enable mouse swiping for testing
+  });
+
   return (
-    <div className="carousel">
+    <div className="carousel" {...swipeHandlers}>
       <BsArrowLeftCircleFill onClick={prevSlide} className="arrow arrow-left" />
       {promoImages.map((item, idx) => {
         return (
@@ -51,4 +58,4 @@ export const Header = () => {
   );
 };
 
-export default Header; // Export the Header component
+export default Header;

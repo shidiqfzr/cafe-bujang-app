@@ -25,8 +25,12 @@ const registerUser = async (req, res) => {
             return res.status(400).json({ success: false, message: "Masukkan email yang valid." });
         }
 
-        if (!validator.isStrongPassword(password)) {
-            return res.status(400).json({ success: false, message: "Kata sandi harus minimal 8 karakter dan mencakup huruf besar, huruf kecil, angka, dan karakter khusus." });
+        // if (!validator.isStrongPassword(password)) {
+        //     return res.status(400).json({ success: false, message: "Kata sandi harus minimal 8 karakter dan mencakup huruf besar, huruf kecil, angka, dan karakter khusus." });
+        // }
+
+        if (password.length < 8) {
+            return res.status(400).json({ success: false, message: "Kata sandi harus minimal 8 karakter" });
         }
 
         // Hashing user password

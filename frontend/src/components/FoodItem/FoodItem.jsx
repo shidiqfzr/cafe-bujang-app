@@ -20,7 +20,6 @@ const formatCurrency = (amount) => {
 const FoodItem = ({ id, name, price, description, image }) => {
     const { cartItems, addToCart, removeFromCart, url } = useContext(StoreContext);
     const [showToast, setShowToast] = useState(false);
-    const [showFab, setShowFab] = useState(false);
     const navigate = useNavigate();
 
     // Calculate total items in the cart
@@ -29,7 +28,6 @@ const FoodItem = ({ id, name, price, description, image }) => {
     const handleAddToCart = () => {
         addToCart(id);
         setShowToast(true); 
-        setShowFab(true);
     };
 
     const handleNavigateToCart = () => {
@@ -60,29 +58,29 @@ const FoodItem = ({ id, name, price, description, image }) => {
             {showToast && <Toast message={`Menu telah ditambahkan ke keranjang`} onClose={() => setShowToast(false)} />}
             
             {/* Floating action button with item count */}
-            {showFab && (
-                <Fab
-                    color="primary"
-                    aria-label="go to cart"
-                    onClick={handleNavigateToCart}
-                    sx={{
-                        backgroundColor: 'tomato',
-                        color: 'white',
-                        '&:hover': {
-                            backgroundColor: '#ff6347',
-                        },
-                        position: 'fixed',
-                        bottom: '20px',
-                        right: '20px',
-                        zIndex: 1000,
-                    }}
-                >
-                    <Badge 
-                    badgeContent={totalCartItems} color="error">
-                        <ShoppingCartIcon />
-                    </Badge>
-                </Fab>
-            )}
+            <Fab
+                color="primary"
+                aria-label="go to cart"
+                onClick={handleNavigateToCart}
+                sx={{
+                    backgroundColor: 'tomato',
+                    color: 'white',
+                    boxShadow: 'none',
+                    '&:hover': {
+                        backgroundColor: '#ff6347',
+                        boxShadow: 'none',
+                    },
+                    position: 'fixed',
+                    bottom: '20px',
+                    right: '20px',
+                    zIndex: 1000,
+                }}
+            >
+                <Badge 
+                badgeContent={totalCartItems} color="error">
+                    <ShoppingCartIcon />
+                </Badge>
+            </Fab>
         </div>
     );
 };

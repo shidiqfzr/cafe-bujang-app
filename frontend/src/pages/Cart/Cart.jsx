@@ -67,6 +67,22 @@ const Cart = () => {
       return; // Exit the function early if the cart is empty
     }
 
+    // Check if the table number is provided
+    if (!customerInfo.tableNumber || customerInfo.tableNumber.trim() === "") {
+      Swal.fire({
+        title: "Nomor Meja Diperlukan",
+        text: "Silakan masukkan nomor meja sebelum melanjutkan pemesanan.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        customClass: {
+          popup: "small-swal-popup",
+          title: "small-swal-title",
+          content: "small-swal-content",
+        },
+      });
+      return; // Exit the function early if the table number is missing
+    }
+
     // Create order items array
     let orderItems = [];
     food_list.forEach((item) => {
@@ -132,6 +148,51 @@ const Cart = () => {
     }
   };
 
+  const handlePromoCodeSubmit = () => {
+    if (enteredPromoCode.trim() === "") {
+      Swal.fire({
+        title: "Kode Promo Kosong",
+        text: "Silakan masukkan kode promo sebelum mengirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        customClass: {
+          popup: "small-swal-popup",
+          title: "small-swal-title",
+          content: "small-swal-content",
+        },
+      });
+      return;
+    }
+  
+    // Check if the promo code is valid
+    if (enteredPromoCode === "MERDEKA" || enteredPromoCode === "SPECIAL20") {
+      handlePromoCode(enteredPromoCode); // Apply the promo code
+      Swal.fire({
+        title: "Kode Promo Valid",
+        text: "Diskon berhasil diterapkan ke keranjang Anda.",
+        icon: "success",
+        confirmButtonText: "OK",
+        customClass: {
+          popup: "small-swal-popup",
+          title: "small-swal-title",
+          content: "small-swal-content",
+        },
+      });
+    } else {
+      Swal.fire({
+        title: "Kode Promo Tidak Valid",
+        text: "Kode promo yang Anda masukkan tidak ditemukan atau sudah tidak berlaku.",
+        icon: "error",
+        confirmButtonText: "OK",
+        customClass: {
+          popup: "small-swal-popup",
+          title: "small-swal-title",
+          content: "small-swal-content",
+        },
+      });
+    }
+  };
+  
   // Redirect to cart if no items in cart or no token
   useEffect(() => {
     if (!token || getTotalCartAmount() === 0) {
@@ -176,7 +237,6 @@ const Cart = () => {
 
       <div className="cart-bottom">
         <div className="cart-bottom-left">
-          
           <div className="customer-info">
             <h2>Informasi Pelanggan</h2>
             <label htmlFor="tableNumber">Nomor Meja:</label>
@@ -218,7 +278,7 @@ const Cart = () => {
                   value={enteredPromoCode}
                   onChange={(e) => setEnteredPromoCode(e.target.value)}
                 />
-                <button onClick={() => handlePromoCode(enteredPromoCode)}>
+                <button onClick={() => handlePromoCodeSubmit(enteredPromoCode)}>
                   Submit
                 </button>
               </div>
